@@ -1,0 +1,54 @@
+﻿html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 20% 55% 20%;
+    grid-template-rows: 30% auto;
+    grid-column-gap: 15px;
+    justify-content: center;
+}
+
+    .grid-container > div {
+        
+    }
+.main-content {
+    background-color: #f2f2f2;
+    border-radius: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    padding: 15px;
+}
+
+#banner {
+    height: 120px;
+    background-color: #125d98;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#banner h1 {
+    font-size: 5em;
+    color: #fff;
+}
+
+#index-table-card {
+    background-color: #e8e8e8;
+    border-radius: 15px;
+}
+
+
+#index-table tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+#index-table tr:nth-child(odd) {
+    background-color: #e8e8e8;
+} 

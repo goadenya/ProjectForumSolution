@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
+namespace AgoraPostAPI.Data
+{
+    public class AgoraPostContext : DbContext
+    {
+        public AgoraPostContext (DbContextOptions<AgoraPostContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<AgoraPostAPI.Data.Post> Post { get; set; }
+    }
+}
