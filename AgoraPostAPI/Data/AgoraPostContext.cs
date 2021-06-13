@@ -14,5 +14,7 @@ namespace AgoraPostAPI.Data
         }
 
         public DbSet<AgoraPostAPI.Data.Post> Post { get; set; }
+        public DbSet<AgoraPostAPI.Data.Comment> Comment { get; set; }
+        public DbSet<AgoraPostAPI.Data.Reply> Reply { get; set; }
     }
 }

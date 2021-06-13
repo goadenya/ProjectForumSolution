@@ -9,7 +9,7 @@ namespace AgoraPostAPI.Data
     [Table("Replies")]
     public class Reply
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Text { get; set; }
         public string Author { get; set; }
         public string UserId { get; set; }

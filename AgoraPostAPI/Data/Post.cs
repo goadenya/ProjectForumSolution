@@ -9,10 +9,10 @@ namespace AgoraPostAPI.Data
     [Table("Posts")]
     public class Post
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Author { get; set; }
         public DateTime DatePosted { get; set; }
         public List<Comment> Comments { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
     }
 }

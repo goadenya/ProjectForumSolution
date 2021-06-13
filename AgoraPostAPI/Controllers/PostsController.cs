@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AgoraPostAPI.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AgoraPostAPI.Data;
 
 namespace AgoraPostAPI.Controllers
 {
@@ -29,7 +29,7 @@ namespace AgoraPostAPI.Controllers
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        public async Task<ActionResult<Post>> GetPost(string id)
         {
             var post = await _context.Post.FindAsync(id);
 
@@ -44,7 +44,7 @@ namespace AgoraPostAPI.Controllers
         // PUT: api/Posts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, Post post)
+        public async Task<IActionResult> PutPost(string id, Post post)
         {
             if (id != post.Id)
             {
@@ -78,14 +78,28 @@ namespace AgoraPostAPI.Controllers
         public async Task<ActionResult<Post>> PostPost(Post post)
         {
             _context.Post.Add(post);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (PostExists(post.Id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return CreatedAtAction("GetPost", new { id = post.Id }, post);
         }
 
         // DELETE: api/Posts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        public async Task<IActionResult> DeletePost(string id)
         {
             var post = await _context.Post.FindAsync(id);
             if (post == null)
@@ -99,7 +113,7 @@ namespace AgoraPostAPI.Controllers
             return NoContent();
         }
 
-        private bool PostExists(int id)
+        private bool PostExists(string id)
         {
             return _context.Post.Any(e => e.Id == id);
         }
