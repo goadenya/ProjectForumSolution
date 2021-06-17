@@ -19,6 +19,22 @@ namespace AgoraPostAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("AgoraPostAPI.Data.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("AgoraPostAPI.Data.Comment", b =>
                 {
                     b.Property<string>("Id")
@@ -27,8 +43,14 @@ namespace AgoraPostAPI.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DatePosted")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PostId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -48,12 +70,35 @@ namespace AgoraPostAPI.Migrations
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("AgoraPostAPI.Data.PostCategory", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PostId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostCategory");
                 });
 
             modelBuilder.Entity("AgoraPostAPI.Data.Reply", b =>
@@ -92,18 +137,45 @@ namespace AgoraPostAPI.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("AgoraPostAPI.Data.PostCategory", b =>
+                {
+                    b.HasOne("AgoraPostAPI.Data.Category", "Category")
+                        .WithMany("PostCategories")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("AgoraPostAPI.Data.Post", "Post")
+                        .WithMany("PostCategories")
+                        .HasForeignKey("PostId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("AgoraPostAPI.Data.Reply", b =>
                 {
                     b.HasOne("AgoraPostAPI.Data.Comment", "Comment")
-                        .WithMany()
+                        .WithMany("Replies")
                         .HasForeignKey("CommentId");
 
                     b.Navigation("Comment");
                 });
 
+            modelBuilder.Entity("AgoraPostAPI.Data.Category", b =>
+                {
+                    b.Navigation("PostCategories");
+                });
+
+            modelBuilder.Entity("AgoraPostAPI.Data.Comment", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("AgoraPostAPI.Data.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("PostCategories");
                 });
 #pragma warning restore 612, 618
         }

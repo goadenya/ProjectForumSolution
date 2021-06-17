@@ -68,6 +68,8 @@ body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     background-color: #dddddd;
+    min-height: 100vh;
+    /*overflow-x: hidden*/
 }
 .footer {
     position: absolute;

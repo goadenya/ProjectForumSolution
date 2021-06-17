@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgoraFE", "AgoraFE\AgoraFE.csproj", "{A05AFF14-508A-4607-A1B4-F0BFC5ACDC5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgoraPostAPI", "AgoraPostAPI\AgoraPostAPI.csproj", "{B7EABA85-67AF-4F72-8D09-D1B79AD2BBE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgoraPostAPI", "AgoraPostAPI\AgoraPostAPI.csproj", "{B7EABA85-67AF-4F72-8D09-D1B79AD2BBE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

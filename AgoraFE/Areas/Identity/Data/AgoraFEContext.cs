@@ -16,6 +16,8 @@ namespace AgoraFE.Areas.Identity.Data
         {
         }
 
+        public DbSet<AgoraFEUser> AgoraFEUser { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -46,13 +48,14 @@ namespace AgoraFE.Areas.Identity.Data
             builder.Entity<AgoraFEUser>().HasData(new AgoraFEUser
             {
                 Id = adminId,
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",
+                UserName = "admin@core.api",
+                NormalizedUserName = "ADMIN@CORE.API",
                 Email = "admin@core.api",
                 NormalizedEmail = "ADMIN@CORE.API",
-                EmailConfirmed = true,
+                EmailConfirmed = false,
                 PasswordHash = hasher.HashPassword(null, "AdminPass1!"),
                 SecurityStamp = Guid.NewGuid().ToString(),
+                LockoutEnabled = true,
             });
 
             builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>

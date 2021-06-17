@@ -97,18 +97,18 @@ namespace AgoraFE.Migrations
                         {
                             Id = "admin-c0-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b7ee2786-4518-4fd4-8086-36668044eb20",
+                            ConcurrencyStamp = "497eef64-f345-4aaa-9486-df4bac9300ea",
                             DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@core.api",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@CORE.API",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOKseOkxqiWYmghoUw7VLVkXQE3CIWJNNTUBnhDW10Msn7j932xty7MjEuKpOch3rQ==",
+                            NormalizedUserName = "ADMIN@CORE.API",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFPnbblf2RVvWykAv5iJbBcbpDIInnRrxDmyY9TQcrRscc1IwIQ5JRnxXNkzoZgsEw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5854b41b-8800-40ed-8c1f-4f9fa04847ab",
+                            SecurityStamp = "954162ff-250b-4e68-986d-898f6e48e0b8",
                             TwoFactorEnabled = false,
-                            UserName = "admin"
+                            UserName = "admin@core.api"
                         });
                 });
 
@@ -142,14 +142,14 @@ namespace AgoraFE.Migrations
                         new
                         {
                             Id = "root-0c0-aa65-4af8-bd17-00bd9344e575",
-                            ConcurrencyStamp = "c53b98bc-a66e-4d71-8ad5-628353247ea3",
+                            ConcurrencyStamp = "04818fb0-8cbf-435e-880f-77787294d0a5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "user-2c0-aa65-4af8-bd17-00bd9344e575",
-                            ConcurrencyStamp = "a7476940-95bb-4740-b512-8b9514f94fb9",
+                            ConcurrencyStamp = "4f93ab06-8e6f-4e51-941a-3c6eafbbefa5",
                             Name = "User",
                             NormalizedName = "USER"
                         });

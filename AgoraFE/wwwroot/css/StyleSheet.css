@@ -51,4 +51,21 @@
 
 #index-table tr:nth-child(odd) {
     background-color: #e8e8e8;
-} 
+}
+
+.content-background {
+    background: #fff;
+    border-radius: 15px;
+}
+
+.container-fluid {
+    display: grid;
+    justify-content: center;
+}
+
+.main-content-background {
+    background: #fff;
+    border-radius: 15px;
+    width: 100%;
+}
+

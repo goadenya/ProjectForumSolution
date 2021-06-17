@@ -8,10 +8,10 @@ namespace AgoraFE.Services
 {
     interface IPostDAL
     {
-        Task<Models.Post> AddPost(Models.Post Post);
-        Task UpdatePost(string editId, Models.Post Post);
-        Task<Models.Post> GetPost(string id);
-        Task<List<Models.Post>> GetPosts();
-        Task<Models.Post> DeletePost(string id); 
+        Task<Models.PostModel> AddPost(Models.PostModel Post);
+        Task UpdatePost(string editId, Models.PostModel Post);
+        Task<Models.PostModel> GetPost(string id);
+        Task<List<Models.PostModel>> GetPosts();
+        Task<Models.PostModel> DeletePost(string id); 
     }
 }
