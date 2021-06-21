@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace AgoraPostAPI.Data
     {
         [Key]
         public string Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
         

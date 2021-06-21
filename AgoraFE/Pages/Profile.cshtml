@@ -1,5 +1,5 @@
-﻿@page
-@model AgoraFE.Models.ProfileModel
+﻿@page "{name?}"
+@model AgoraFE.Pages.ProfileModel
 @{
 }
 
@@ -17,11 +17,11 @@
     body {
         min-height: 100vh;
         overflow-x: hidden
-    }
+    } 
 </style>
 
 <div class="row py-5 px-4">
-    <div class="col-md-5 mx-auto">
+    <div>
         <!-- Profile widget -->
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 cover">
@@ -38,7 +38,7 @@
                         </ul>
                     </div>
                     <div class="media-body mb-5 text-white">
-                        <h4 class="mt-0 mb-0">Mark Williams</h4>
+                        <h4 class="mt-0 mb-0">@Model.Name</h4>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>New York</p>
                     </div>
                 </div>

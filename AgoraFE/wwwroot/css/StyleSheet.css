@@ -69,3 +69,29 @@
     width: 100%;
 }
 
+/* Post Page*/
+
+.post-container {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    width: 100%;
+    min-height: 200px;
+}
+
+.profile-info { 
+    width: 20vh;
+    min-width: 20vh;
+}
+
+.post-body {
+    padding: 15px;
+}
+
+.post-date {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    width: 100%;
+    background: #125d98;
+    color: #fff;
+}

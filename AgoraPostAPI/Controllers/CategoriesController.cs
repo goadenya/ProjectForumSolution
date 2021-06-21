@@ -77,6 +77,7 @@ namespace AgoraPostAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
+            category.Id = Guid.NewGuid().ToString();
             _context.Category.Add(category);
             try
             {

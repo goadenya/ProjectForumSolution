@@ -13,6 +13,8 @@ namespace AgoraFE.Pages
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public int Code { get; set; }
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);

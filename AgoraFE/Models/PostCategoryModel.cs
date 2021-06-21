@@ -11,7 +11,7 @@ namespace AgoraFE.Models
         public string Id { get; set; }
 
         public string PostId { get; set; }
-        public PostModel Post { get; set; }
+        public Post Post { get; set; }
         
         public string CategoryId { get; set; }
         public Category Category { get; set; }

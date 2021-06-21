@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AgoraFE.Models;
+using AgoraFE.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,16 +12,18 @@ namespace AgoraFE.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly CategoryManager _categoryManager;
+        public IndexModel(CategoryManager categoryManager)
         {
-            _logger = logger;
+            _categoryManager = categoryManager;
         }
 
-        public void OnGet()
-        {
+        public List<Category> Categories { get; set; }
 
+        public async Task<IActionResult> OnGetAsync()
+        {
+            Categories = await _categoryManager.GetAllCategories();
+            return Page();
         }
     }
 }

@@ -13,10 +13,17 @@ namespace AgoraPostAPI.Data
         {
         }
 
-        public DbSet<AgoraPostAPI.Data.Post> Post { get; set; }
-        public DbSet<AgoraPostAPI.Data.Category> Category { get; set; }
-        public DbSet<AgoraPostAPI.Data.PostCategory> PostCategory { get; set; }
-        public DbSet<AgoraPostAPI.Data.Comment> Comment { get; set; }
-        public DbSet<AgoraPostAPI.Data.Reply> Reply { get; set; }
+        public DbSet<Data.Post> Post { get; set; }
+        public DbSet<Data.Category> Category { get; set; }
+        public DbSet<Data.PostCategory> PostCategory { get; set; }
+        public DbSet<Data.Comment> Comment { get; set; }
+        public DbSet<Data.Reply> Reply { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Data.Category>()
+                .HasIndex(b => b.Name)
+                .IsUnique();
+        }
     }
 }

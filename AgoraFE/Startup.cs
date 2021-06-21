@@ -1,7 +1,10 @@
+using AgoraFE.Areas.Identity.Data;
+using AgoraFE.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +28,8 @@ namespace AgoraFE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
             services.AddRazorPages(options =>
             {
                 // options.Conventions.AuthorizePage("/Privacy", "MustBeUser");
@@ -43,7 +48,13 @@ namespace AgoraFE
                 options.ConsentCookie.Expiration = TimeSpan.FromMinutes(20);
             });
 
-            services.AddScoped<HttpClient>();
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<HttpClient>();
+
+            services.AddTransient<UserRoleManager>();
+
+            services.AddTransient<CategoryManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

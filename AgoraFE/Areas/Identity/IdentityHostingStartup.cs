@@ -20,6 +20,7 @@ namespace AgoraFE.Areas.Identity
                         context.Configuration.GetConnectionString("AgoraFEContextConnection")));
 
                 services.AddDefaultIdentity<AgoraFEUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<AgoraFEContext>();
             });
         } 

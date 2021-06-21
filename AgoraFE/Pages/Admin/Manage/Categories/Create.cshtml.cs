@@ -5,7 +5,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using AgoraFE.Areas.Identity.Data;
 using AgoraFE.Models;
+using AgoraFE.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,17 +18,26 @@ namespace AgoraFE.Pages.Admin.Manage.Categories
     public class CreateModel : PageModel
     {
         private readonly HttpClient _client;
-        public CreateModel(HttpClient client)
+        private readonly UserRoleManager _userRoleManager;
+        public CreateModel(HttpClient client, UserRoleManager userRoleManager)
         {
             _client = client;
+            _userRoleManager = userRoleManager;
         }
         public IActionResult OnGet()
         {
-            return Page();
+            if (_userRoleManager.UserIsRole(User.Identity.Name, "Admin"))
+            {
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("/Admin/Info");
+            }
         }
 
         [BindProperty]
-        public Category category { get; set; }
+        public Models.Category category { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -38,14 +51,14 @@ namespace AgoraFE.Pages.Admin.Manage.Categories
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            category.Id = Guid.NewGuid().ToString();
+            
 
-            await CreateCategoryAsync(category);
+            var url = await CreateCategoryAsync(category);
 
             return RedirectToPage("./Index");
         }
 
-        public async Task<Uri> CreateCategoryAsync(Category category)
+        public async Task<Uri> CreateCategoryAsync(Models.Category category)
         {
             HttpResponseMessage response = await _client.PostAsJsonAsync(
                 "api/Categories", category);
