@@ -11,47 +11,47 @@ namespace AgoraPostAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly AgoraPostContext _context;
 
-        public CategoriesController(AgoraPostContext context)
+        public CommentsController(AgoraPostContext context)
         {
             _context = context;
         }
 
-        // GET: api/Categories
+        // GET: api/Comments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategory()
+        public async Task<ActionResult<IEnumerable<Comment>>> GetComment()
         {
-            return await _context.Category.ToListAsync();
+            return await _context.Comment.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<Comment>> GetComment(int id)
         {
-            var category = await _context.Category.FindAsync(id);
+            var comment = await _context.Comment.FindAsync(id);
 
-            if (category == null)
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return comment;
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutComment(int id, Comment comment)
         {
-            if (id != category.Id)
+            if (id != comment.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(comment).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace AgoraPostAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!CommentExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace AgoraPostAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
+        // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
-            _context.Category.Add(category);
+            _context.Comment.Add(comment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/Comments/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteComment(int id)
         {
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
+            var comment = await _context.Comment.FindAsync(id);
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            _context.Category.Remove(category);
+            _context.Comment.Remove(comment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private bool CommentExists(int id)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _context.Comment.Any(e => e.Id == id);
         }
     }
 }

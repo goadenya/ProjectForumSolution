@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgoraPostAPI.Data.Likes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,13 +10,15 @@ namespace AgoraPostAPI.Data
     public class Comment
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
         public string Author { get; set; }
         public string Text { get; set; }
         public DateTime DatePosted { get; set; }
         public Post Post { get; set; }
         [ForeignKey("Post")]
-        public string PostId { get; set; }
+        public int PostId { get; set; }
         public List<Reply> Replies { get; set; }
+        public List<CommentLike> CommentLikes { get; set; }
     }
 }

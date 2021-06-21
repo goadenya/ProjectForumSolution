@@ -18,6 +18,9 @@ namespace AgoraPostAPI.Data
         public DbSet<Data.PostCategory> PostCategory { get; set; }
         public DbSet<Data.Comment> Comment { get; set; }
         public DbSet<Data.Reply> Reply { get; set; }
+        public DbSet<Data.Likes.PostLike> PostLike { get; set; }
+        public DbSet<Data.Likes.CommentLike> CommentLike { get; set; }
+        public DbSet<Data.Likes.ReplyLike> ReplyLike { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

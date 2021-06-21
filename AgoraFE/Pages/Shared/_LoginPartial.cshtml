@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using AgoraFE.Areas.Identity.Data
+@using AgoraFE.Services
 
 @inject SignInManager<AgoraFEUser> SignInManager
 @inject UserManager<AgoraFEUser> UserManager
+@inject UserRoleManager UserRoleManager
 
 @{string UserProfileLink = $"/Profile/{UserManager.GetUserName(User)}"; }
 
@@ -12,10 +14,18 @@
         @*<li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-page="/Profile/Index">Min Profil</a>
         </li>*@
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" href="@UserProfileLink" title="Profile">@UserManager.GetUserName(User)!</a>
-        @*<a id="manage" class="nav-link text-dark" asp-area="" asp-page="@UserProfileLink" title="Profile">@UserManager.GetUserName(User)!</a>*@
-    </li>
+
+        if (UserRoleManager.UserIsRole(UserManager.GetUserName(User), "Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Manage/Index">Manage Forum</a>
+            </li>
+        }
+
+        <li class="nav-item">
+            <a id="manage" class="nav-link text-dark" href="@UserProfileLink" title="Profile">@UserManager.GetUserName(User)!</a>
+            @*<a id="manage" class="nav-link text-dark" asp-area="" asp-page="@UserProfileLink" title="Profile">@UserManager.GetUserName(User)!</a>*@
+        </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>

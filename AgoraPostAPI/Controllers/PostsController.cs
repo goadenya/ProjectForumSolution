@@ -29,22 +29,25 @@ namespace AgoraPostAPI.Controllers
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(string id)
+        public async Task<ActionResult<Post>> GetPost(int id)
         {
             var post = await _context.Post.FindAsync(id);
 
+            //var replies = await _context.Reply.Where
             if (post == null)
             {
                 return NotFound();
             }
 
+            post.Comments = await _context.Comment.Where(x => x.PostId == post.Id).Include(x => x.Replies).ToListAsync();
+            
             return post;
         }
 
         // PUT: api/Posts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(string id, Post post)
+        public async Task<IActionResult> PutPost(int id, Post post)
         {
             if (id != post.Id)
             {
@@ -77,7 +80,6 @@ namespace AgoraPostAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Post>> PostPost(Post post)
         {
-            post.Id = Guid.NewGuid().ToString();
             _context.Post.Add(post);
             try
             {
@@ -114,7 +116,7 @@ namespace AgoraPostAPI.Controllers
             return NoContent();
         }
 
-        private bool PostExists(string id)
+        private bool PostExists(int id)
         {
             return _context.Post.Any(e => e.Id == id);
         }

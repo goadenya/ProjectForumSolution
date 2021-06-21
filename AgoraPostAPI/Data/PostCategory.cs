@@ -10,14 +10,14 @@ namespace AgoraPostAPI.Data
     public class PostCategory
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [ForeignKey("Post")]
-        public string PostId { get; set; }
+        public int PostId { get; set; }
         public Post Post { get; set; }
         
         [ForeignKey("Category")]
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
     }
 }
