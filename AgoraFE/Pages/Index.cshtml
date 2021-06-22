@@ -20,15 +20,13 @@
                     </tr>
                     <tr>
                         <th>Subforum</th>
-                        <th>Category</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var category in Model.Categories)
                     {
                         <tr>
-                            <td><a href="/Category/@category.Name"><strong>@category.Name</strong></a> <br /> <div class="pt-4"><i>@category.Description</i></div></td>
-                            <td><a href="#">@category.Name</a></td>
+                            <td><a href="/Category/@category.name"><strong>@category.name</strong></a> <br /> <div class="pt-4"><i>@category.description</i></div></td>
                         </tr>
                     }
                 </tbody>

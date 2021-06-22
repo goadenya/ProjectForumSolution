@@ -23,8 +23,8 @@
                     @foreach (var post in Model.Posts)
                     {
                         <tr>
-                            <td><a href="/Post/@Model.Category/@post.Id"></a> <br /> <div class="pt-4"><i>@post.Text</i></div></td>
-                            <td>posted by <a href="/Profile/@post.Author">@post.Author</a></td>
+                            <td><a href="/Post/@Model.Category/@post.id"></a> <br /> <div class="pt-4"><i>@post.text</i></div></td>
+                            <td>posted by <a href="/Profile/@post.author">@post.author</a></td>
                         </tr>
                     }
                 </tbody>

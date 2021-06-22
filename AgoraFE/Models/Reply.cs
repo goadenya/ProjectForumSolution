@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AgoraFE.Models
 {
     public class Reply
     {
-        public int Id { get; set; }
-        public string Text { get; set; }
-        public string Author { get; set; }
-        public string UserId { get; set; }
-        public DateTime DatePosted { get; set; }
-        public string CommentId { get; set; }
+        public int id { get; set; }
+        public string userId { get; set; }
+        public string text { get; set; }
+        public string author { get; set; }
+        public DateTime datePosted { get; set; }
+        public int commentId { get; set; }
+        public List<ReplyLike> replyLikes { get; set; }
     }
 }

@@ -43,14 +43,14 @@ namespace AgoraFE.Services
             InitiateRequest();
 
             HttpResponseMessage response = await _client.PutAsJsonAsync(
-                $"api/posts/{post.Id}", post);
+                $"api/posts/{post.id}", post);
             response.EnsureSuccessStatusCode();
 
             // Deserialize the updated product from the response body.
             post = await response.Content.ReadFromJsonAsync<Models.Post>();
             return post;
         }
-        public async Task<Models.Post> GetPost(string id)
+        public async Task<Models.Post> GetPost(int id)
         {
             InitiateRequest();
             Path = $"{Url}/{id}";
@@ -62,7 +62,7 @@ namespace AgoraFE.Services
             }
             return post;
         }
-        public async Task<HttpStatusCode> DeletePost(string id)
+        public async Task<HttpStatusCode> DeletePost(int id)
         {
             HttpResponseMessage response = await _client.DeleteAsync(
                 $"api/posts/{id}");

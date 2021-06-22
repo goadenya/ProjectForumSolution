@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AgoraFE.Models
 {
     public class Comment
     {
-        public int Id { get; set; }
-        public string Author { get; set; }
-        public string Text { get; set; }
-        public DateTime DatePosted { get; set; }
-        public int PostId { get; set; }
-        public Post Post { get; set; }
-        public List<Reply> Replies { get; set; }
+        public int id { get; set; }
+        public string userId { get; set; }
+        public string author { get; set; }
+        public string text { get; set; }
+        public DateTime datePosted { get; set; }
+        public int postId { get; set; }
+        public List<Reply> replies { get; set; }
+        public List<CommentLike> commentLikes { get; set; }
     }
 }

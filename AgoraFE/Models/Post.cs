@@ -1,20 +1,21 @@
-﻿using AgoraFE.Areas.Identity.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgoraFE.Models
 {
+
     public class Post
     {
-        public int Id { get; set; }
-        public int UserID { get; set; }
-        public string Headline { get; set; }
-        public string Text { get; set; }
-        public string Author { get; set; }
-        public DateTime DatePosted { get; set; }
-        public List<Comment> Comments { get; set; }
+        public int id { get; set; }
+        public string userID { get; set; }
+        public string headline { get; set; }
+        public string text { get; set; }
+        public string author { get; set; }
+        public DateTime datePosted { get; set; }
+        public List<PostCategory> postCategories { get; set; }
+        public List<Comment> comments { get; set; }
+        public List<PostLike> postLikes { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace AgoraFE.Services
     {
         Task<Uri> AddPost(Models.Post Post);
         Task<Models.Post> UpdatePost(Models.Post Post);
-        Task<Models.Post> GetPost(string id);
-        Task<HttpStatusCode> DeletePost(string id);
+        Task<Models.Post> GetPost(int id);
+        Task<HttpStatusCode> DeletePost(int id);
         Task<List<Models.Post>> GetAllPosts ();
         void InitiateRequest();
     }

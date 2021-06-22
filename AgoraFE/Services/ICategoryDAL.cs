@@ -10,8 +10,8 @@ namespace AgoraFE.Services
     {
         Task<Uri> AddCategory(Models.Category Category);
         Task<Models.Category> UpdateCategory(Models.Category Category);
-        Task<Models.Category> GetCategory(string id);
-        Task<HttpStatusCode> DeleteCategory(string id);
+        Task<Models.Category> GetCategory(int? id);
+        Task<HttpStatusCode> DeleteCategory(int? id);
         Task<List<Models.Category>> GetAllCategories();
         void InitiateRequest();
     }

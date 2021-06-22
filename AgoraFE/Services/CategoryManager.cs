@@ -43,7 +43,7 @@ namespace AgoraFE.Services
             return response.Headers.Location;
         }
 
-        public async Task<Category> GetCategory(string id)
+        public async Task<Category> GetCategory(int? id)
         {
             InitiateRequest();
             Path = $"{Url}/{id}";
@@ -75,7 +75,7 @@ namespace AgoraFE.Services
             InitiateRequest();
 
             HttpResponseMessage response = await _client.PutAsJsonAsync(
-                $"api/categories/{category.Id}", category);
+                $"api/categories/{category.id}", category);
             response.EnsureSuccessStatusCode();
 
             // Deserialize the updated product from the response body.
@@ -83,7 +83,7 @@ namespace AgoraFE.Services
             return category;
         }
 
-        public async Task<HttpStatusCode> DeleteCategory(string id)
+        public async Task<HttpStatusCode> DeleteCategory(int? id)
         {
             HttpResponseMessage response = await _client.DeleteAsync(
                 $"api/categories/{id}");
