@@ -3,39 +3,87 @@
 @{
 }
 
+@using Microsoft.AspNetCore.Identity
+@using AgoraFE.Areas.Identity.Data
+@using AgoraFE.Services
 
-@*<div class="bg-white rounded-lg">
-    <div class="p-4">
-        <h1>Create</h1>
+@inject UserManager<AgoraFEUser> UserManager
+@inject SignInManager<AgoraFEUser> SignInManager
 
-        <h4>Category</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="category.name" class="control-label"></label>
-                        <input asp-for="category.name" class="form-control" />
-                        <span asp-validation-for="category.name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="category.description" class="control-label"></label>
-                        <input asp-for="category.description" class="form-control" />
-                        <span asp-validation-for="category.description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
-        </div>
+@{
+    var userId = UserManager.GetUserId(User);
+    var user = UserManager.GetUserAsync(User).Result;
+}
 
-        <div>
-            <a asp-page="Index">Back to List</a>
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="comment-field bg-white rounded-bottom">
+        <div class="p-4">
+            <h4>Create new post</h4>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Post.headline" class="form-control" />
+                    <span asp-validation-for="Post.userID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId">Choose category</label>
+                    <select asp-for="CategoryId" class="form-control">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.id">@category.name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Post.userID" value="@user.Id" class="form-control" />
+                    <span asp-validation-for="Post.userID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Post.author" value="@user.UserName" class="form-control" />
+                    <span asp-validation-for="Post.author" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <textarea asp-for="Post.text" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Post.text" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Post.datePosted" value="@DateTime.Now" class="form-control" />
+                    <span asp-validation-for="Post.datePosted" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Post" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
     </div>
-</div>*@
+}
+else
+{
+    <div class="comment-field bg-white rounded-bottom">
+        <strong class="p-4">Add Comment</strong>
+        <div class="p-4">
+            <div class="d-flex rounded-lg border border-secondary">
+                <div class="p-4">
+                    <h5 class="text-center text-muted">Log in to comment</h5>
+                    <div class="p-4 align-self-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

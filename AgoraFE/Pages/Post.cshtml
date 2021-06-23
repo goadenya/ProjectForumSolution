@@ -25,7 +25,7 @@
 
             <div class="align-self-center pt-2 pb-3">
                 by
-                <a class="text-center" href="#">@Model.Post.author</a>
+                <a class="text-center" href="/Profile/@Model.Post.author">@Model.Post.author</a>
             </div>
 
         </div>
@@ -59,7 +59,7 @@
                     <div class="comment">
                         <div class="row">
                             <div class="col-8 d-flex">
-                                <h5>@comment.author</h5>  <span>- @comment.datePosted</span>
+                                <strong><a href="/Profile/@comment.author">@comment.author</a></strong> <span>- @comment.datePosted</span>
                             </div>
                             <div class="col-4">
                                 <div class="pull-right reply">
@@ -69,37 +69,62 @@
                         </div> <p>@comment.text</p>
                     </div>
                     <div class="collapse" id="@replySectionId">
-                        <div class="comment-field bg-white rounded-bottom">
-                            <strong class="pl-4 pt-4">Reply to @comment.author</strong>
-                            <div class="pl-4 pt-0 pb-4 pr-4">
-                                <form method="post">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-group">
-                                        <input type="hidden" asp-for="Reply.userId" value="@user.Id" class="form-control" />
-                                        <span asp-validation-for="Reply.userId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" asp-for="Reply.author" value="@user.UserName" class="form-control" />
-                                        <span asp-validation-for="Reply.author" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea asp-for="Reply.text" class="form-control" rows="2"></textarea>
-                                        <span asp-validation-for="Reply.text" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" asp-for="Reply.datePosted" value="@DateTime.Now" class="form-control" />
-                                        <span asp-validation-for="Reply.userId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" asp-for="Reply.commentId" value="@comment.id" class="form-control" />
-                                        <span asp-validation-for="Reply.commentId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" value="Post" class="btn btn-primary" />
-                                    </div>
-                                </form>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="comment-field bg-white rounded-bottom">
+                                <strong class="pl-4 pt-4">Reply to @comment.author</strong>
+                                <div class="pl-4 pt-0 pb-4 pr-4">
+                                    <form method="post">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <input type="hidden" asp-for="Reply.userId" value="@user.Id" class="form-control" />
+                                            <span asp-validation-for="Reply.userId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" asp-for="Reply.author" value="@user.UserName" class="form-control" />
+                                            <span asp-validation-for="Reply.author" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea asp-for="Reply.text" class="form-control" rows="2"></textarea>
+                                            <span asp-validation-for="Reply.text" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" asp-for="Reply.datePosted" value="@DateTime.Now" class="form-control" />
+                                            <span asp-validation-for="Reply.userId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" asp-for="Reply.commentId" value="@comment.id" class="form-control" />
+                                            <span asp-validation-for="Reply.commentId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Post" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="comment-field bg-white rounded-bottom">
+                                <div class="p-4">
+                                    <div class="d-flex rounded-lg border border-secondary">
+                                        <div class="p-4">
+                                            <h5 class="text-center text-muted">Log in to reply</h5>
+                                            <div class="p-4 align-self-center">
+                                                <ul class="list-inline">
+                                                    <li class="list-inline-item">
+                                                        <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                     @foreach (var reply in comment.replies)
                     {
@@ -109,7 +134,7 @@
                                 <div class="media-body">
                                     <div class="row">
                                         <div class="col-12 d-flex">
-                                            <h5>@reply.author</h5>  <span>- @reply.datePosted</span>
+                                            <strong><a href="/Profile/@reply.author">@reply.author</a></strong>  <span>- @reply.datePosted</span>
                                         </div>
                                     </div> <p>@reply.text</p>
                                 </div>

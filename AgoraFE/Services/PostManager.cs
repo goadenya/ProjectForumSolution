@@ -32,7 +32,7 @@ namespace AgoraFE.Services
         {
             InitiateRequest();
             HttpResponseMessage response = await _client.PostAsJsonAsync(
-                "api/Categories", post);
+                Url, post);
             response.EnsureSuccessStatusCode();
 
             // return URI of the created resource.
@@ -43,7 +43,7 @@ namespace AgoraFE.Services
             InitiateRequest();
 
             HttpResponseMessage response = await _client.PutAsJsonAsync(
-                $"api/posts/{post.id}", post);
+                $"{Url}/{post.id}", post);
             response.EnsureSuccessStatusCode();
 
             // Deserialize the updated product from the response body.
@@ -65,7 +65,7 @@ namespace AgoraFE.Services
         public async Task<HttpStatusCode> DeletePost(int id)
         {
             HttpResponseMessage response = await _client.DeleteAsync(
-                $"api/posts/{id}");
+                $"{Url}/{id}");
             return response.StatusCode;
         }
         public async Task<List<Models.Post>> GetAllPosts()

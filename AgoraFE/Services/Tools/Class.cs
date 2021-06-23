@@ -10,12 +10,19 @@ namespace AgoraFE.Services.Tools
         public string ShortenText(string text, int wordCount)
         {
             var textParts = text.Split(' ');
-            var newText = "";
-            for (int i = 0; i < wordCount; i++)
+            if (textParts.Length > wordCount + 10)
             {
-                newText += $"{textParts[i]} ";
+                var newText = "";
+                for (int i = 0; i < wordCount; i++)
+                {
+                    newText += $"{textParts[i]} ";
+                }
+                return newText;
             }
-            return newText;
+            else
+            {
+                return text;
+            }
         }
     }
 }

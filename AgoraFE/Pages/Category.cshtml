@@ -30,7 +30,9 @@
                             <tr>
                                 <td style="max-width: 400px;"><a href="/Post/@Model.Category/@post.id">@post.headline</a> <br /> 
                                     <div @*class="hide-text-part"*@>
-                                        <p >@Model._tools.ShortenText(post.text, 25)</p>
+                                        <p>
+                                            @Model._tools.ShortenText(post.text, 25)
+                                        </p>
                                     </div>
                                 </td>
                                 <td>posted by <a href="/Profile/@post.author">@post.author</a></td>
