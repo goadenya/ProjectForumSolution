@@ -1,5 +1,6 @@
 using AgoraFE.Areas.Identity.Data;
 using AgoraFE.Services;
+using AgoraFE.Services.Tools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -52,9 +53,17 @@ namespace AgoraFE
 
             services.AddTransient<HttpClient>();
 
-            services.AddTransient<UserRoleManager>();
+            services.AddTransient<Services.UserRoleManager>();
 
-            services.AddTransient<CategoryManager>();
+            services.AddTransient<Services.CategoryManager>();
+
+            services.AddTransient<Services.PostManager>();
+
+            services.AddTransient<Services.CommentManager>();
+
+            services.AddTransient<Services.ReplyManager>();
+
+            services.AddTransient<Services.Tools.Tools>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -27,6 +27,15 @@ namespace AgoraPostAPI.Controllers
             return await _context.Post.ToListAsync();
         }
 
+        //
+
+        //// GET: api/Posts
+        //[HttpGet("{categoryId}")]
+        //public async Task<ActionResult<IEnumerable<Post>>> GetCategoryPosts(int categoryId)
+        //{
+        //    return await _context.Post.Where(x => x.PostCategories).ToListAsync();
+        //}
+
         // GET: api/Posts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetPost(int id)

@@ -43,12 +43,25 @@ namespace AgoraFE.Services
             return response.Headers.Location;
         }
 
-        public async Task<Category> GetCategory(int? id)
+        public async Task<Category> GetCategoryById(int? id)
         {
             InitiateRequest();
             Path = $"{Url}/{id}";
             Category category = null;
             HttpResponseMessage response = await _client.GetAsync(Path);
+            if (response.IsSuccessStatusCode)
+            {
+                category = await response.Content.ReadFromJsonAsync<Category>();
+            }
+            return category;
+        }
+
+        public async Task<Category> GetCategoryByName(string name)
+        {
+            InitiateRequest();
+            var specialPath = $"api/Subforum/{name}";
+            Category category = null;
+            HttpResponseMessage response = await _client.GetAsync(specialPath);
             if (response.IsSuccessStatusCode)
             {
                 category = await response.Content.ReadFromJsonAsync<Category>();

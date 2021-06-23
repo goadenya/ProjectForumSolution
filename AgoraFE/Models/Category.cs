@@ -7,6 +7,6 @@ namespace AgoraFE.Models
         public int id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-        public List<PostCategory> postCategories { get; set; }
+        public List<Post> posts { get; set; }
     }
 }

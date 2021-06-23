@@ -18,8 +18,10 @@ namespace AgoraPostAPI.Data
         public string Text { get; set; }
         public string Author { get; set; }
         public DateTime DatePosted { get; set; }
-
-        public List<PostCategory> PostCategories { get; set; }
+        
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
         public List<Comment> Comments { get; set; }
         public List<PostLike> PostLikes { get; set; }
     }

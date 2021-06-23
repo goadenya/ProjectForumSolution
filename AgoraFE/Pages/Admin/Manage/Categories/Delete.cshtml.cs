@@ -27,7 +27,7 @@ namespace AgoraFE.Pages.Admin.Manage.Categories
                 return NotFound();
             }
 
-            Category = await _categoryManager.GetCategory(id);
+            Category = await _categoryManager.GetCategoryById(id);
 
             if (Category == null)
             {
@@ -43,7 +43,7 @@ namespace AgoraFE.Pages.Admin.Manage.Categories
                 return NotFound();
             }
 
-            Category = await _categoryManager.GetCategory(id);
+            Category = await _categoryManager.GetCategoryById(id);
 
             if (Category != null)
             {

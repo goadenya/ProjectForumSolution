@@ -3,8 +3,11 @@
 @{
 }
 
-
-<h1>@Model.Category</h1>
+<style>
+    td {
+        word-wrap: break-word
+    }
+</style>
 
 <div class="main-content-background">
     <div class="row">
@@ -12,7 +15,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th colspan="3">Forumindex</th>
+                        <th colspan="3">Forumindex: @Model.Category</th>
                     </tr>
                     <tr>
                         <th>Subject</th>
@@ -20,17 +23,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var post in Model.Posts)
+                    @if (Model.Posts != null)
                     {
-                        <tr>
-                            <td><a href="/Post/@Model.Category/@post.id"></a> <br /> <div class="pt-4"><i>@post.text</i></div></td>
-                            <td>posted by <a href="/Profile/@post.author">@post.author</a></td>
-                        </tr>
+                        @foreach (var post in Model.Posts)
+                        {
+                            <tr>
+                                <td style="max-width: 400px;"><a href="/Post/@Model.Category/@post.id">@post.headline</a> <br /> 
+                                    <div @*class="hide-text-part"*@>
+                                        <p >@Model._tools.ShortenText(post.text, 25)</p>
+                                    </div>
+                                </td>
+                                <td>posted by <a href="/Profile/@post.author">@post.author</a></td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
         </div>
-
+        
     </div>
 </div>
-

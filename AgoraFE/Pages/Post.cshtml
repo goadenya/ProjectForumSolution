@@ -1,133 +1,218 @@
 ﻿@page "{category?}/{postid?}"
 @model AgoraFE.Pages.PostModel
+
+@using Microsoft.AspNetCore.Identity
+@using AgoraFE.Areas.Identity.Data
+@using AgoraFE.Services
+
+@inject UserManager<AgoraFEUser> UserManager
+@inject SignInManager<AgoraFEUser> SignInManager
+
 @{
+    var userId = UserManager.GetUserId(User);
+    var user = UserManager.GetUserAsync(User).Result;
+    int count = 0;
 }
 
 <div class="original-post">
     <div class="post-date p-2 mb-0">
-        <strong>05-08-2021</strong>
+        <strong>@Model.Post.datePosted.ToShortDateString()</strong>
     </div>
 
     <div class="post-container">
         <div class="profile-info d-flex flex-column">
-            @*<div><img class="img-fluid p-4" src="https://deribaportfolio.azurewebsites.net/img/BW_David_Deriba.jpg" alt="Profile picture of @Model.Post.Author" /></div><br />*@
             <div><img class="img-fluid p-3" src="https://deribaportfolio.azurewebsites.net/img/BW_David_Deriba.jpg" alt="Profile picture of " /></div>
 
             <div class="align-self-center pt-2 pb-3">
                 by
-                <a class="text-center" href="#">CarGuy123</a>
+                <a class="text-center" href="#">@Model.Post.author</a>
             </div>
 
         </div>
         <div class="post-body">
             <h4>
-                Lorem ipsum dolor sit amet
+                @Model.Post.headline
             </h4>
             <p>
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                @Model.Post.text
             </p>
         </div>
     </div>
 </div>
 
+<partial name="_CommentFieldPartial" />
+
 <br />
 
-<div class="comment-field bg-white rounded-lg">
-    <strong class="p-4">Add Comment</strong>
+<div class="bg-white rounded-lg">
     <div class="p-4">
-        <form class="form-group" action="/" method="post">
-            <div class="form-group">
-                @*<label for="PostComment"></label>*@
-                <textarea class="form-control" id="PostComment" rows="3"></textarea>
-            </div>
-            <div class="d-flex">
-                <div class="align-self-end">
-                    <button style="float: right;" class="btn btn-primary">Post</button>
+        @foreach (var comment in Model.Post.comments)
+        {
+            string replySectionName = "replyTextArea";
+            count++;
+            var replySectionId = $"{replySectionName}{count}";
+            ViewData["commentId"] = comment.id;
+            <div class="media p-4">
+                <br />
+                <img class="mr-3" alt="Bootstrap Media Preview" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" />
+                <div class="media-body">
+                    <div class="comment">
+                        <div class="row">
+                            <div class="col-8 d-flex">
+                                <h5>@comment.author</h5>  <span>- @comment.datePosted</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="pull-right reply">
+                                    <button type="button" data-toggle="collapse" data-target="#@replySectionId" class="btn"> <i class="fa fa-reply"></i> reply</button>
+                                </div>
+                            </div>
+                        </div> <p>@comment.text</p>
+                    </div>
+                    <div class="collapse" id="@replySectionId">
+                        <div class="comment-field bg-white rounded-bottom">
+                            <strong class="pl-4 pt-4">Reply to @comment.author</strong>
+                            <div class="pl-4 pt-0 pb-4 pr-4">
+                                <form method="post">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <input type="hidden" asp-for="Reply.userId" value="@user.Id" class="form-control" />
+                                        <span asp-validation-for="Reply.userId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" asp-for="Reply.author" value="@user.UserName" class="form-control" />
+                                        <span asp-validation-for="Reply.author" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea asp-for="Reply.text" class="form-control" rows="2"></textarea>
+                                        <span asp-validation-for="Reply.text" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" asp-for="Reply.datePosted" value="@DateTime.Now" class="form-control" />
+                                        <span asp-validation-for="Reply.userId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" asp-for="Reply.commentId" value="@comment.id" class="form-control" />
+                                        <span asp-validation-for="Reply.commentId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Post" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var reply in comment.replies)
+                    {
+                        <div class="reply">
+                            <div class="media mt-4">
+                                <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" /></a>
+                                <div class="media-body">
+                                    <div class="row">
+                                        <div class="col-12 d-flex">
+                                            <h5>@reply.author</h5>  <span>- @reply.datePosted</span>
+                                        </div>
+                                    </div> <p>@reply.text</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @*<div class="media mt-3">
+                            <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nAcoHRf.jpg" /></a>
+                            <div class="media-body">
+                                <div class="row">
+                                    <div class="col-12 d-flex">
+                                        <h5>John Smith</h5> <span>- 4 hours ago</span>
+                                    </div>
+                                </div> the majority have suffered alteration in some form, by injected humour, or randomised words.
+                            </div>
+                        </div>*@
                 </div>
             </div>
-        </form>
+        }
     </div>
 </div>
 
 
-<div class="bg-white">
-    <div class="p-4">
-        <div class="media">
-            <img class="mr-3" alt="Bootstrap Media Preview" src="https://i.imgur.com/stD0Q19.jpg" />
-            <div class="media-body">
-                <div class="row">
-                    <div class="col-8 d-flex">
-                        <h5>Maria Smantha</h5> <span>- 2 hours ago</span>
+@*<div class="bg-white">
+        <div class="p-4">
+            <div class="media">
+                <img class="mr-3" alt="Bootstrap Media Preview" src="https://i.imgur.com/stD0Q19.jpg" />
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-8 d-flex">
+                            <h5>Maria Smantha</h5> <span>- 2 hours ago</span>
+                        </div>
+                        <div class="col-4">
+                            <div class="pull-right reply"> <a href="#"><span><i class="fa fa-reply"></i> reply</span></a> </div>
+                        </div>
+                    </div> It is a long established fact that a reader will be distracted by the readable content of a page.
+                    <div class="media mt-4">
+                        <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/xELPaag.jpg" /></a>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-12 d-flex">
+                                    <h5>Simona Disa</h5> <span>- 3 hours ago</span>
+                                </div>
+                            </div> letters, as opposed to using 'Content here, content here', making it look like readable English.
+                        </div>
                     </div>
-                    <div class="col-4">
-                        <div class="pull-right reply"> <a href="#"><span><i class="fa fa-reply"></i> reply</span></a> </div>
-                    </div>
-                </div> It is a long established fact that a reader will be distracted by the readable content of a page. <div class="media mt-4">
-                    <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/xELPaag.jpg" /></a>
-                    <div class="media-body">
-                        <div class="row">
-                            <div class="col-12 d-flex">
-                                <h5>Simona Disa</h5> <span>- 3 hours ago</span>
-                            </div>
-                        </div> letters, as opposed to using 'Content here, content here', making it look like readable English.
+                    <div class="media mt-3">
+                        <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nAcoHRf.jpg" /></a>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-12 d-flex">
+                                    <h5>John Smith</h5> <span>- 4 hours ago</span>
+                                </div>
+                            </div> the majority have suffered alteration in some form, by injected humour, or randomised words.
+                        </div>
                     </div>
                 </div>
-                <div class="media mt-3">
-                    <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nAcoHRf.jpg" /></a>
-                    <div class="media-body">
-                        <div class="row">
-                            <div class="col-12 d-flex">
-                                <h5>John Smith</h5> <span>- 4 hours ago</span>
-                            </div>
-                        </div> the majority have suffered alteration in some form, by injected humour, or randomised words.
+            </div>
+            <div class="media mt-4">
+                <img class="mr-3" alt="Bootstrap Media Preview" src="https://i.imgur.com/xELPaag.jpg" />
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-8 d-flex">
+                            <h5>Shad f</h5> <span>- 2 hours ago</span>
+                        </div>
+                        <div class="col-4">
+                            <div class="pull-right reply"> <a href="#"><span><i class="fa fa-reply"></i> reply</span></a> </div>
+                        </div>
+                    </div> The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33. <div class="media mt-4">
+                        <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nUNhspp.jpg" /></a>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-12 d-flex">
+                                    <h5>Andy flowe</h5> <span>- 5 hours ago</span>
+                                </div>
+                            </div> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
+                        </div>
+                    </div>
+                    <div class="media mt-3">
+                        <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/HjKTNkG.jpg" /></a>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-12 d-flex">
+                                    <h5>Simp f</h5> <span>- 5 hours ago</span>
+                                </div>
+                            </div> a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur
+                        </div>
+                    </div>
+                    <div class="media mt-3">
+                        <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nAcoHRf.jpg" /></a>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-12 d-flex">
+                                    <h5>John Smith</h5> <span>- 4 hours ago</span>
+                                </div>
+                            </div> the majority have suffered alteration in some form, by injected humour, or randomised words.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="media mt-4">
-            <img class="mr-3" alt="Bootstrap Media Preview" src="https://i.imgur.com/xELPaag.jpg" />
-            <div class="media-body">
-                <div class="row">
-                    <div class="col-8 d-flex">
-                        <h5>Shad f</h5> <span>- 2 hours ago</span>
-                    </div>
-                    <div class="col-4">
-                        <div class="pull-right reply"> <a href="#"><span><i class="fa fa-reply"></i> reply</span></a> </div>
-                    </div>
-                </div> The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33. <div class="media mt-4">
-                    <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nUNhspp.jpg" /></a>
-                    <div class="media-body">
-                        <div class="row">
-                            <div class="col-12 d-flex">
-                                <h5>Andy flowe</h5> <span>- 5 hours ago</span>
-                            </div>
-                        </div> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-                    </div>
-                </div>
-                <div class="media mt-3">
-                    <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/HjKTNkG.jpg" /></a>
-                    <div class="media-body">
-                        <div class="row">
-                            <div class="col-12 d-flex">
-                                <h5>Simp f</h5> <span>- 5 hours ago</span>
-                            </div>
-                        </div> a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur
-                    </div>
-                </div>
-                <div class="media mt-3">
-                    <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nAcoHRf.jpg" /></a>
-                    <div class="media-body">
-                        <div class="row">
-                            <div class="col-12 d-flex">
-                                <h5>John Smith</h5> <span>- 4 hours ago</span>
-                            </div>
-                        </div> the majority have suffered alteration in some form, by injected humour, or randomised words.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    </div>*@
 
 @*<div class="container mb-5 mt-5">
         <div class="card">

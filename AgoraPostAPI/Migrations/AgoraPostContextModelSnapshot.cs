@@ -140,6 +140,9 @@ namespace AgoraPostAPI.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime2");
 
@@ -154,29 +157,9 @@ namespace AgoraPostAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("AgoraPostAPI.Data.PostCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostCategory");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("AgoraPostAPI.Data.Reply", b =>
@@ -252,23 +235,15 @@ namespace AgoraPostAPI.Migrations
                     b.Navigation("Reply");
                 });
 
-            modelBuilder.Entity("AgoraPostAPI.Data.PostCategory", b =>
+            modelBuilder.Entity("AgoraPostAPI.Data.Post", b =>
                 {
                     b.HasOne("AgoraPostAPI.Data.Category", "Category")
-                        .WithMany("PostCategories")
+                        .WithMany("Posts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AgoraPostAPI.Data.Post", "Post")
-                        .WithMany("PostCategories")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("AgoraPostAPI.Data.Reply", b =>
@@ -284,7 +259,7 @@ namespace AgoraPostAPI.Migrations
 
             modelBuilder.Entity("AgoraPostAPI.Data.Category", b =>
                 {
-                    b.Navigation("PostCategories");
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("AgoraPostAPI.Data.Comment", b =>
@@ -297,8 +272,6 @@ namespace AgoraPostAPI.Migrations
             modelBuilder.Entity("AgoraPostAPI.Data.Post", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("PostCategories");
 
                     b.Navigation("PostLikes");
                 });

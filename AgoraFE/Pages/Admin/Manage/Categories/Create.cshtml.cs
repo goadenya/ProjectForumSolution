@@ -19,10 +19,12 @@ namespace AgoraFE.Pages.Admin.Manage.Categories
     {
         private readonly HttpClient _client;
         private readonly UserRoleManager _userRoleManager;
-        public CreateModel(HttpClient client, UserRoleManager userRoleManager)
+        private readonly CategoryManager _categoryManager;
+        public CreateModel(HttpClient client, UserRoleManager userRoleManager, CategoryManager categoryManager)
         {
             _client = client;
             _userRoleManager = userRoleManager;
+            _categoryManager = categoryManager;
         }
         public IActionResult OnGet()
         {
@@ -47,13 +49,7 @@ namespace AgoraFE.Pages.Admin.Manage.Categories
                 return Page();
             }
 
-            _client.BaseAddress = new Uri("https://localhost:44337/");
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            
-
-            var url = await CreateCategoryAsync(category);
+            await _categoryManager.AddCategory(category);
 
             return RedirectToPage("./Index");
         }

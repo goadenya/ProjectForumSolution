@@ -1,0 +1,71 @@
+﻿@model AgoraFE.Pages.PostModel
+
+@using Microsoft.AspNetCore.Identity
+@using AgoraFE.Areas.Identity.Data
+@using AgoraFE.Services
+
+@inject UserManager<AgoraFEUser> UserManager
+@inject SignInManager<AgoraFEUser> SignInManager
+
+@{
+    var userId = UserManager.GetUserId(User);
+    var user = UserManager.GetUserAsync(User).Result;
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="comment-field bg-white rounded-bottom">
+        <strong class="pl-4 pt-4">Add Comment</strong>
+        <div class="pl-4 pt-0 pb-4 pr-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Comment.userId" value="@user.Id" class="form-control" />
+                    <span asp-validation-for="Comment.userId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Comment.author" value="@user.UserName" class="form-control" />
+                    <span asp-validation-for="Comment.author" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <textarea asp-for="Comment.text" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Comment.text" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Comment.datePosted" value="@DateTime.Now" class="form-control" />
+                    <span asp-validation-for="Comment.datePosted" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Comment.postId" value="@Model.PostId" class="form-control" />
+                    <span asp-validation-for="Comment.postId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Post" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="comment-field bg-white rounded-bottom">
+        <strong class="p-4">Add Comment</strong>
+        <div class="p-4">
+            <div class="d-flex rounded-lg border border-secondary">
+                <div class="p-4">
+                    <h5 class="text-center text-muted">Log in to comment</h5>
+                    <div class="p-4 align-self-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a class="btn btn-outline-primary" href="#">Register</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="btn btn-primary" href="#">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

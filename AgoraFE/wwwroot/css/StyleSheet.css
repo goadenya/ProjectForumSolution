@@ -95,3 +95,11 @@
     background: #125d98;
     color: #fff;
 }
+
+.hide-text-part {
+    max-width: max-content;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-wrap: break-word;
+}

@@ -31,11 +31,18 @@ namespace AgoraPostAPI.Migrations
                     Headline = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,32 +62,6 @@ namespace AgoraPostAPI.Migrations
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostCategory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostCategory", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PostCategory_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PostCategory_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
@@ -187,19 +168,14 @@ namespace AgoraPostAPI.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostCategory_CategoryId",
-                table: "PostCategory",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostCategory_PostId",
-                table: "PostCategory",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PostLike_PostId",
                 table: "PostLike",
                 column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_CategoryId",
+                table: "Posts",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Replies_CommentId",
@@ -218,16 +194,10 @@ namespace AgoraPostAPI.Migrations
                 name: "CommentLike");
 
             migrationBuilder.DropTable(
-                name: "PostCategory");
-
-            migrationBuilder.DropTable(
                 name: "PostLike");
 
             migrationBuilder.DropTable(
                 name: "ReplyLike");
-
-            migrationBuilder.DropTable(
-                name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Replies");
@@ -237,6 +207,9 @@ namespace AgoraPostAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }
