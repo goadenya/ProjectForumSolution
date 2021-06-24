@@ -111,7 +111,7 @@ namespace AgoraPostAPI.Controllers
 
         // DELETE: api/Posts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(string id)
+        public async Task<IActionResult> DeletePost(int id)
         {
             var post = await _context.Post.FindAsync(id);
             if (post == null)
