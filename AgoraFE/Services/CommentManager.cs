@@ -73,7 +73,7 @@ namespace AgoraFE.Services
         }
         public void InitiateRequest()
         {
-            _client.BaseAddress = new Uri("https://localhost:44337/");
+            _client.BaseAddress = new Uri("https://agorapostapi.azurewebsites.net/");
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));

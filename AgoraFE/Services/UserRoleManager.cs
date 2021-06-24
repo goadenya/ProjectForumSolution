@@ -24,7 +24,11 @@ namespace AgoraFE.Services
         public bool UserIsRole(string userName, string role)
         {
             var user = _userManager.FindByNameAsync(userName).Result;
-            return _userManager.IsInRoleAsync(user, role).Result;
+            if (user != null)
+            {
+                return _userManager.IsInRoleAsync(user, role).Result;
+            }
+            return false;
         }
     }
 }
