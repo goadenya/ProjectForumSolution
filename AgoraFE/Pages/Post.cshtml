@@ -4,9 +4,12 @@
 @using Microsoft.AspNetCore.Identity
 @using AgoraFE.Areas.Identity.Data
 @using AgoraFE.Services
+@using Humanizer
 
 @inject UserManager<AgoraFEUser> UserManager
 @inject SignInManager<AgoraFEUser> SignInManager
+@inject ProfileManager profileManager
+
 
 @{
     var userId = UserManager.GetUserId(User);
@@ -21,7 +24,7 @@
 
     <div class="post-container">
         <div class="profile-info d-flex flex-column">
-            <div><img class="img-fluid p-3" src="https://deribaportfolio.azurewebsites.net/img/BW_David_Deriba.jpg" alt="Profile picture of " /></div>
+            <div><img class="img-fluid p-3" src="/images/@Model.Post.profilePicUrl" alt="Profile picture of " /></div>
 
             <div class="align-self-center pt-2 pb-3">
                 by
@@ -31,7 +34,7 @@
         </div>
         <div class="post-body">
             <h4>
-                @Model.Post.headline
+                @Model.Post.headline <span class="small">@Model.Post.datePosted.AddHours(-2).Humanize()</span>
             </h4>
             <p>
                 @Model.Post.text
@@ -44,119 +47,115 @@
 
 <br />
 
-<div class="bg-white rounded-lg">
-    <div class="p-4">
-        @foreach (var comment in Model.Post.comments)
-        {
-            string replySectionName = "replyTextArea";
-            count++;
-            var replySectionId = $"{replySectionName}{count}";
-            ViewData["commentId"] = comment.id;
-            <div class="media p-4">
-                <br />
-                <img class="mr-3" alt="Bootstrap Media Preview" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" />
-                <div class="media-body">
-                    <div class="comment">
-                        <div class="row">
-                            <div class="col-8 d-flex">
-                                <strong><a href="/Profile/@comment.author">@comment.author</a></strong> <span>- @comment.datePosted</span>
-                            </div>
-                            <div class="col-4">
-                                <div class="pull-right reply">
-                                    <button type="button" data-toggle="collapse" data-target="#@replySectionId" class="btn"> <i class="fa fa-reply"></i> reply</button>
+@if (Model.Post.comments.Count > 0)
+{
+    <div class="bg-white rounded-lg">
+        <div class="p-4">
+            @foreach (var comment in Model.Post.comments)
+            {
+                string replySectionName = "replyTextArea";
+                count++;
+                var replySectionId = $"{replySectionName}{count}";
+                ViewData["commentId"] = comment.id;
+                <div class="media p-4">
+                    <br />
+                    <img class="mr-3" alt="Bootstrap Media Preview" src="/images/@comment.profilePicUrl" />
+                    <div class="media-body">
+                        <div class="comment">
+                            <div class="row">
+                                <div class="col-8 d-flex">
+                                    <strong><a href="/Profile/@comment.author">@comment.author</a></strong> <span> - @comment.datePosted.AddHours(-2).Humanize()</span>
                                 </div>
-                            </div>
-                        </div> <p>@comment.text</p>
-                    </div>
-                    <div class="collapse" id="@replySectionId">
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <div class="comment-field bg-white rounded-bottom">
-                                <strong class="pl-4 pt-4">Reply to @comment.author</strong>
-                                <div class="pl-4 pt-0 pb-4 pr-4">
-                                    <form method="post">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <div class="form-group">
-                                            <input type="hidden" asp-for="Reply.userId" value="@user.Id" class="form-control" />
-                                            <span asp-validation-for="Reply.userId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" asp-for="Reply.author" value="@user.UserName" class="form-control" />
-                                            <span asp-validation-for="Reply.author" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <textarea asp-for="Reply.text" class="form-control" rows="2"></textarea>
-                                            <span asp-validation-for="Reply.text" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" asp-for="Reply.datePosted" value="@DateTime.Now" class="form-control" />
-                                            <span asp-validation-for="Reply.userId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="hidden" asp-for="Reply.commentId" value="@comment.id" class="form-control" />
-                                            <span asp-validation-for="Reply.commentId" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="submit" value="Post" class="btn btn-primary" />
-                                        </div>
-                                    </form>
+                                <div class="col-4">
+                                    <div class="pull-right reply">
+                                        <button type="button" data-toggle="collapse" data-target="#@replySectionId" class="btn"> <i class="fa fa-reply"></i> reply</button>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="comment-field bg-white rounded-bottom">
-                                <div class="p-4">
-                                    <div class="d-flex rounded-lg border border-secondary">
-                                        <div class="p-4">
-                                            <h5 class="text-center text-muted">Log in to reply</h5>
-                                            <div class="p-4 align-self-center">
-                                                <ul class="list-inline">
-                                                    <li class="list-inline-item">
-                                                        <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                                                    </li>
-                                                </ul>
+                            </div> <p>@comment.text</p>
+                        </div>
+                        <div class="collapse" id="@replySectionId">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <div class="comment-field bg-white rounded-bottom">
+                                    <strong class="pl-4 pt-4">Reply to @comment.author</strong>
+                                    <div class="pl-4 pt-0 pb-4 pr-4">
+                                        <form method="post">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="Reply.userId" value="@user.Id" class="form-control" />
+                                                <span asp-validation-for="Reply.userId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="Reply.author" value="@user.UserName" class="form-control" />
+                                                <span asp-validation-for="Reply.author" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea asp-for="Reply.text" class="form-control" rows="2"></textarea>
+                                                <span asp-validation-for="Reply.text" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="Reply.datePosted" value="@DateTime.Now" class="form-control" />
+                                                <span asp-validation-for="Reply.userId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="Reply.commentId" value="@comment.id" class="form-control" />
+                                                <span asp-validation-for="Reply.commentId" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="Reply.profilePicUrl" value="@profileManager.GetProfilePictureAsync(User.Identity.Name).Result" class="form-control" />
+                                                <span asp-validation-for="Reply.profilePicUrl" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Post" class="btn btn-primary" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="comment-field bg-white rounded-bottom">
+                                    <div class="p-4">
+                                        <div class="d-flex rounded-lg border border-secondary">
+                                            <div class="p-4">
+                                                <h5 class="text-center text-muted">Log in to reply</h5>
+                                                <div class="p-4 align-self-center">
+                                                    <ul class="list-inline">
+                                                        <li class="list-inline-item">
+                                                            <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            }
+                        </div>
+                        @foreach (var reply in comment.replies)
+                        {
+                            <div class="reply">
+                                <div class="media mt-4">
+                                    <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="/images/@reply.profilePicUrl" /></a>
+                                    <div class="media-body">
+                                        <div class="row">
+                                            <div class="col-12 d-flex">
+                                                <strong><a href="/Profile/@reply.author">@reply.author</a></strong>  <span> - @reply.datePosted.AddHours(-2).Humanize()</span>
+                                            </div>
+                                        </div> <p>@reply.text</p>
+                                    </div>
+                                </div>
                             </div>
                         }
                     </div>
-                    @foreach (var reply in comment.replies)
-                    {
-                        <div class="reply">
-                            <div class="media mt-4">
-                                <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" /></a>
-                                <div class="media-body">
-                                    <div class="row">
-                                        <div class="col-12 d-flex">
-                                            <strong><a href="/Profile/@reply.author">@reply.author</a></strong>  <span>- @reply.datePosted</span>
-                                        </div>
-                                    </div> <p>@reply.text</p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                    @*<div class="media mt-3">
-                            <a class="pr-3" href="#"><img alt="Bootstrap Media Another Preview" src="https://i.imgur.com/nAcoHRf.jpg" /></a>
-                            <div class="media-body">
-                                <div class="row">
-                                    <div class="col-12 d-flex">
-                                        <h5>John Smith</h5> <span>- 4 hours ago</span>
-                                    </div>
-                                </div> the majority have suffered alteration in some form, by injected humour, or randomised words.
-                            </div>
-                        </div>*@
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
+}
 
 
 @*<div class="bg-white">

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AgoraFE.Services.Tools
 {
-    interface ITool
+    interface IFileManager
     {
-        string ShortenText(string text, int wordCount);
+        string UploadFile(IFormFile file);
     }
 }

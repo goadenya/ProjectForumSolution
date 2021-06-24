@@ -36,11 +36,11 @@ namespace AgoraFE.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Categories = await _categoryManager.GetAllCategories();
             Post.categoryId = CategoryId;
-            await _postManager.AddPost(Post);
-            //SelectedCategory = Categories.Where(x => x.id == Post.categoryId).FirstOrDefault();
-            //return RedirectToPage("Post", new { Category = SelectedCategory.name, PostId = Post.id });
-            return RedirectToPage("/Index");
+            var newPost = await _postManager.AddPost(Post);
+            SelectedCategory = Categories.Where(x => x.id == Post.categoryId).FirstOrDefault();
+            return RedirectToPage("Post", new {category = SelectedCategory.name, postId = newPost.id });
         }
     }
 }

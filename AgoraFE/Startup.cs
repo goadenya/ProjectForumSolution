@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -63,7 +65,11 @@ namespace AgoraFE
 
             services.AddTransient<Services.ReplyManager>();
 
+            services.AddTransient<Services.ProfileManager>();
+
             services.AddTransient<Services.Tools.Tools>();
+
+            services.AddTransient<Services.Tools.FileManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +86,21 @@ namespace AgoraFE
                 app.UseHsts();
             }
 
+            var supportedCultures = new[]
+            {
+               new CultureInfo("en-US"),
+
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+
             app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AgoraFE.Services
@@ -28,15 +30,18 @@ namespace AgoraFE.Services
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<Uri> AddPost(Models.Post post)
+        public async Task<Models.Post> AddPost(Models.Post post)
         {
             InitiateRequest();
             HttpResponseMessage response = await _client.PostAsJsonAsync(
                 Url, post);
             response.EnsureSuccessStatusCode();
 
+            string apiResponse = response.Content.ReadAsStringAsync().Result;
+            var newPost = JsonConvert.DeserializeObject<Models.Post>(apiResponse);
+
             // return URI of the created resource.
-            return response.Headers.Location;
+            return newPost;
         }
         public async Task<Models.Post> UpdatePost(Models.Post post)
         {

@@ -9,6 +9,7 @@
 
 @inject UserManager<AgoraFEUser> UserManager
 @inject SignInManager<AgoraFEUser> SignInManager
+@inject ProfileManager profileManager
 
 @{
     var userId = UserManager.GetUserId(User);
@@ -47,6 +48,10 @@
                 <div class="form-group">
                     <textarea asp-for="Post.text" class="form-control" rows="5"></textarea>
                     <span asp-validation-for="Post.text" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="Post.profilePicUrl" value="@profileManager.GetProfilePictureAsync(User.Identity.Name).Result" class="form-control" />
+                    <span asp-validation-for="Post.profilePicUrl" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="hidden" asp-for="Post.datePosted" value="@DateTime.Now" class="form-control" />

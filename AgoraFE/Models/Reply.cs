@@ -10,6 +10,7 @@ namespace AgoraFE.Models
         public string text { get; set; }
         public string author { get; set; }
         public DateTime datePosted { get; set; }
+        public string profilePicUrl { get; set; }
         public int commentId { get; set; }
         public List<ReplyLike> replyLikes { get; set; }
     }

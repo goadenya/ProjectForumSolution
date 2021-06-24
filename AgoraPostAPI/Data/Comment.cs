@@ -13,6 +13,7 @@ namespace AgoraPostAPI.Data
         public int Id { get; set; }
         public string UserId { get; set; }
         public string Author { get; set; }
+        public string ProfilePicUrl { get; set; }
         public string Text { get; set; }
         public DateTime DatePosted { get; set; }
         public Post Post { get; set; }
