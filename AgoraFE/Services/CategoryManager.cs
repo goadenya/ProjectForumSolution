@@ -102,6 +102,5 @@ namespace AgoraFE.Services
                 $"api/categories/{id}");
             return response.StatusCode;
         }
-
     }
 }
